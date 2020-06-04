@@ -32,7 +32,7 @@ class ViewController: UIViewController, GIDSignInDelegate {
         settingUpConstraints() // Setting Constraints
         
         // Automatically sign in the user.
-        restoreCredentials()
+        GIDSignIn.sharedInstance()?.restorePreviousSignIn()
     }
 
     // Setting all the constraints of the View.
@@ -41,11 +41,6 @@ class ViewController: UIViewController, GIDSignInDelegate {
         googleSignInBtn.heightAnchor.constraint(equalToConstant: 75).isActive = true
         googleSignInBtn.widthAnchor.constraint(equalToConstant: 250).isActive = true
         googleSignInBtn.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 0).isActive = true
-    }
-    
-    // Restore the Previous Sign in, If the user already exists.
-    private func restoreCredentials() {
-        GIDSignIn.sharedInstance()?.restorePreviousSignIn()
     }
     
     private func navigateToDestinationViewController() {
