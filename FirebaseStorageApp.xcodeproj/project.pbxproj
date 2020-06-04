@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -50,7 +50,6 @@
 				9BC4732B8549C9A6DC1EA0FE /* Pods-FirebaseStorageApp.debug.xcconfig */,
 				9608CDC61369DF56F98CAE5D /* Pods-FirebaseStorageApp.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -383,7 +382,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.simran.DownloadingFromFirebaseStorage.FirebaseStorageApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.simran.FirebaseStorageApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -402,7 +401,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.simran.DownloadingFromFirebaseStorage.FirebaseStorageApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.simran.FirebaseStorageApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
