@@ -14,6 +14,7 @@
 		51A5E9CA2487F3720054C68E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 51A5E9C92487F3720054C68E /* Assets.xcassets */; };
 		51A5E9CD2487F3720054C68E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 51A5E9CB2487F3720054C68E /* LaunchScreen.storyboard */; };
 		51A5E9D52487F4460054C68E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 51A5E9D42487F4460054C68E /* GoogleService-Info.plist */; };
+		51A5E9D7248919930054C68E /* UploadImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51A5E9D6248919930054C68E /* UploadImageViewController.swift */; };
 		72CE8D4C8D8CF9BF6CE8C25B /* Pods_FirebaseStorageApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FF30131D322CD8EA1C4D52A /* Pods_FirebaseStorageApp.framework */; };
 /* End PBXBuildFile section */
 
@@ -27,6 +28,7 @@
 		51A5E9CC2487F3720054C68E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		51A5E9CE2487F3720054C68E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		51A5E9D42487F4460054C68E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		51A5E9D6248919930054C68E /* UploadImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadImageViewController.swift; sourceTree = "<group>"; };
 		9608CDC61369DF56F98CAE5D /* Pods-FirebaseStorageApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FirebaseStorageApp.release.xcconfig"; path = "Target Support Files/Pods-FirebaseStorageApp/Pods-FirebaseStorageApp.release.xcconfig"; sourceTree = "<group>"; };
 		9BC4732B8549C9A6DC1EA0FE /* Pods-FirebaseStorageApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FirebaseStorageApp.debug.xcconfig"; path = "Target Support Files/Pods-FirebaseStorageApp/Pods-FirebaseStorageApp.debug.xcconfig"; sourceTree = "<group>"; };
 		9FF30131D322CD8EA1C4D52A /* Pods_FirebaseStorageApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FirebaseStorageApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -77,6 +79,7 @@
 				51A5E9C02487F36F0054C68E /* AppDelegate.swift */,
 				51A5E9C22487F36F0054C68E /* SceneDelegate.swift */,
 				51A5E9C42487F36F0054C68E /* ViewController.swift */,
+				51A5E9D6248919930054C68E /* UploadImageViewController.swift */,
 				51A5E9C62487F36F0054C68E /* Main.storyboard */,
 				51A5E9C92487F3720054C68E /* Assets.xcassets */,
 				51A5E9CB2487F3720054C68E /* LaunchScreen.storyboard */,
@@ -229,6 +232,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				51A5E9C52487F36F0054C68E /* ViewController.swift in Sources */,
+				51A5E9D7248919930054C68E /* UploadImageViewController.swift in Sources */,
 				51A5E9C12487F36F0054C68E /* AppDelegate.swift in Sources */,
 				51A5E9C32487F36F0054C68E /* SceneDelegate.swift in Sources */,
 			);
