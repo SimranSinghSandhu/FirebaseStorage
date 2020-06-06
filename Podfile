@@ -10,5 +10,6 @@ target 'FirebaseStorageApp' do
     pod 'Firebase/Storage'
     pod 'Firebase/Database'
     pod 'GoogleSignIn'
+    pod 'SVProgressHUD'
 
 end
