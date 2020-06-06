@@ -37,7 +37,7 @@ class UploadImageViewController: UIViewController {
         btn.setTitle("Upload", for: .normal)
         btn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 24)
         btn.titleLabel?.textAlignment = .center
-//        btn.isHidden = true
+        btn.isHidden = true
         btn.translatesAutoresizingMaskIntoConstraints = false
         return btn
     }()
@@ -54,6 +54,9 @@ class UploadImageViewController: UIViewController {
         // Adding Tap Gesture on ImageView. (ShowImageView)
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(ImageViewTappedHandle))
         showImageView.addGestureRecognizer(tapGesture)
+        
+        // Setting up Action on UploadButton
+        uploadBtn.addTarget(self, action: #selector(uploadBtnHandle), for: .touchUpInside)
         
         // Setting Up SignOutBtn as the Right Bar Button in Navigation Bar.
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Sign Out", style: .done, target: self, action: #selector(signOutHandle))
@@ -125,14 +128,15 @@ extension UploadImageViewController: UINavigationControllerDelegate, UIImagePick
         if let image = info[.editedImage] as? UIImage { // If allows Editing is True
             print("Edited Image is Selected.")
             showImageView.image = image
+            uploadBtn.isHidden = false
         } else if let image = info[.originalImage] as? UIImage { // If allows Editing is False
             print("Original Image is Selected.")
             showImageView.image = image
+            uploadBtn.isHidden = false
         }
         // Dismissing the ViewController when the image is selected.
         dismiss(animated: true, completion: nil)
     }
-    
 }
 
 extension UploadImageViewController {
@@ -188,6 +192,7 @@ extension UploadImageViewController {
         
         let removePhotoAction = UIAlertAction(title: "Remove Photo", style: .destructive) { (action) in
             // Removes the Already Selected Image in the ShowImageView.
+            self.uploadBtn.isHidden = true
             self.showImageView.image = UIImage(named: "placeholderImage.jpg")
         }
         
@@ -204,7 +209,9 @@ extension UploadImageViewController {
         alertController.addAction(cancelAction)
         
         // Presenting the Controller.
-        present(alertController, animated: true, completion: nil)
+        DispatchQueue.main.async {
+            self.present(alertController, animated: true, completion: nil)
+        }
     }
     
     // Check for Autherizations to use Camera in this App.
@@ -261,4 +268,16 @@ extension UploadImageViewController {
             self.present(alertController, animated: true, completion: nil)
         }
     }
+}
+
+extension UploadImageViewController {
+    
+    @objc func uploadBtnHandle() {
+        if showImageView.image == UIImage(named: "placeholderImage.jpg") { // If user has NOT Selected any Image.
+            print("Please Select Image to Upload.")
+        } else { // If user has Selected an Image.
+            print("Image is Uploading.")
+        }
+    }
+    
 }
