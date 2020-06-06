@@ -20,6 +20,7 @@ class UploadImageViewController: UIViewController {
         imageView.layer.borderColor = UIColor.black.cgColor
         imageView.layer.cornerRadius = 10
         imageView.image = UIImage(named: "placeholderImage.jpg")
+        imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         imageView.isUserInteractionEnabled = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -45,14 +46,7 @@ class UploadImageViewController: UIViewController {
     }
     
     @objc func signOutHandle() {
-        do {
-            try Auth.auth().signOut() // Siging Out From Firebase
-            GIDSignIn.sharedInstance().signOut() // Signing Out from Google
-            navigationController?.popToRootViewController(animated: true) // Navigation Back to RootViewController
-            print("Sign Out Successful")
-        } catch {
-            print("Error Signing Out -", error.localizedDescription)
-        }
+        signOutActionSheet()
     }
 }
 
@@ -61,7 +55,7 @@ extension UploadImageViewController {
     // When ShowImageView is Tapped.
     @objc func ImageViewTappedHandle() {
         print("Image View is Pressed!")
-        settingActionSheet()
+        settingSelectingImageActionSheet()
     }
     
     private func settingConstraints() {
@@ -122,7 +116,39 @@ extension UploadImageViewController: UINavigationControllerDelegate, UIImagePick
 
 extension UploadImageViewController {
     
-    private func settingActionSheet() {
+    // When Signout button is pressed on Navigation bar. 
+    private func signOutActionSheet() {
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        
+        let signOutAction = UIAlertAction(title: "Sign Out", style: .destructive) { (action) in
+            print("Sign Out Successful")
+            print("Action =", action)
+            
+            // Signing Out from Firebase and Google
+            do {
+                try Auth.auth().signOut() // Siging Out From Firebase
+                GIDSignIn.sharedInstance().signOut() // Signing Out from Google
+                self.navigationController?.popToRootViewController(animated: true) // Navigation Back to RootViewController
+                print("Sign Out Successful")
+            } catch {
+                print("Error Signing Out -", error.localizedDescription)
+            }
+        }
+        
+        // Cancel Action to dimiss the Action Sheet.
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (_) in
+            self.dismiss(animated: true, completion: nil)
+        }
+        
+        alertController.addAction(signOutAction)
+        alertController.addAction(cancelAction)
+        
+        DispatchQueue.main.async {
+            self.present(alertController, animated: true, completion: nil)
+        }
+    }
+    
+    private func settingSelectingImageActionSheet() {
     
         // Creating a Controller as an Action Sheet.
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
