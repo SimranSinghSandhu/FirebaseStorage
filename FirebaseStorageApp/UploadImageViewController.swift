@@ -27,6 +27,21 @@ class UploadImageViewController: UIViewController {
         return imageView
     }()
     
+    let uploadBtn: UIButton = {
+        let btn = UIButton()
+        btn.layer.borderColor = UIColor.black.cgColor
+        btn.layer.borderWidth = 1
+        btn.layer.cornerRadius = 10
+        btn.clipsToBounds = true
+        btn.backgroundColor = UIColor.systemBlue
+        btn.setTitle("Upload", for: .normal)
+        btn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 24)
+        btn.titleLabel?.textAlignment = .center
+//        btn.isHidden = true
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        return btn
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -34,6 +49,7 @@ class UploadImageViewController: UIViewController {
         view.backgroundColor = UIColor.systemGreen // Setting Background Color for the View.
         
         view.addSubview(showImageView) // Adding ImageView (ShowImageView) inside the View.
+        view.addSubview(uploadBtn) // Adding Upload Button inside the View.
         
         // Adding Tap Gesture on ImageView. (ShowImageView)
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(ImageViewTappedHandle))
@@ -69,6 +85,11 @@ extension UploadImageViewController {
         showImageView.heightAnchor.constraint(equalToConstant: width - spacing).isActive = true
         showImageView.widthAnchor.constraint(equalToConstant: width - spacing).isActive = true
         showImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 0).isActive = true
+        
+        uploadBtn.topAnchor.constraint(equalTo: showImageView.bottomAnchor, constant: 50).isActive = true
+        uploadBtn.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        uploadBtn.widthAnchor.constraint(equalToConstant: 250).isActive = true
+        uploadBtn.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 0).isActive = true
     }
 }
 
@@ -116,7 +137,7 @@ extension UploadImageViewController: UINavigationControllerDelegate, UIImagePick
 
 extension UploadImageViewController {
     
-    // When Signout button is pressed on Navigation bar. 
+    // When Signout button is pressed on Navigation bar.
     private func signOutActionSheet() {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
