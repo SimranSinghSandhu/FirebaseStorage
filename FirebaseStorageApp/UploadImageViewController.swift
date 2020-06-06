@@ -9,6 +9,7 @@
 import UIKit
 import Firebase
 import GoogleSignIn
+import AVFoundation
 
 class UploadImageViewController: UIViewController {
     
@@ -79,6 +80,48 @@ extension UploadImageViewController {
 
 extension UploadImageViewController: UINavigationControllerDelegate, UIImagePickerControllerDelegate {
     
+    private func settingImagePicker(sourceType: UIImagePickerController.SourceType) {
+        
+        let pickerController = UIImagePickerController()
+        pickerController.delegate = self
+        pickerController.allowsEditing = true
+        
+        // Checking if the Source Type is Avialable in this Device.
+        if UIImagePickerController.isSourceTypeAvailable(sourceType) {
+            // If True.
+            pickerController.sourceType = sourceType
+            
+        } else {
+            // If False.
+    
+            self.dismiss(animated: true, completion: nil) // Dissmissing the Controller.
+            
+            // if PhotoLibrary or Camera is not avaiable in the Device then Show Error with an Alert Message.
+            showErrorAlert(title: "Feature not Available", message: "Sorry, This feature is not available on this Device. Try using a different device which has a working Camera.", showSettings: false)
+        }
+        
+        DispatchQueue.main.async {
+            self.present(pickerController, animated: true, completion: nil)
+        }
+    }
+    
+    // When user Selected any Image
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        if let image = info[.editedImage] as? UIImage { // If allows Editing is True
+            print("Edited Image is Selected.")
+            showImageView.image = image
+        } else if let image = info[.originalImage] as? UIImage { // If allows Editing is False
+            print("Original Image is Selected.")
+            showImageView.image = image
+        }
+        // Dismissing the ViewController when the image is selected.
+        dismiss(animated: true, completion: nil)
+    }
+    
+}
+
+extension UploadImageViewController {
+    
     private func settingActionSheet() {
     
         // Creating a Controller as an Action Sheet.
@@ -86,24 +129,24 @@ extension UploadImageViewController: UINavigationControllerDelegate, UIImagePick
         
         // Creating Actions that we wanna show on the Alert Controller
         let photoLibraryAction = UIAlertAction(title: "Photo Library", style: .default) { (action) in
-            print("Photo Library is Selected.")
+            // Photo Library is Slected
             self.settingImagePicker(sourceType: .photoLibrary)
         }
         
         let cameraAction = UIAlertAction(title: "Camera", style: .default) { (action) in
-            print("Camera is Selected.")
+            // Camera is Selected
+            self.checkAutherization()
             self.settingImagePicker(sourceType: .camera)
         }
         
-        // Removes the Already Selected Image
         let removePhotoAction = UIAlertAction(title: "Remove Photo", style: .destructive) { (action) in
-            print("Remove Selected Photo.")
+            // Removes the Already Selected Image in the ShowImageView.
             self.showImageView.image = UIImage(named: "placeholderImage.jpg")
         }
         
-        // Cancels the ActionSheet
+        
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
-            print("Cancel Action Sheet.")
+            // Cancels the ActionSheet
             self.dismiss(animated: true, completion: nil)
         }
         
@@ -117,50 +160,55 @@ extension UploadImageViewController: UINavigationControllerDelegate, UIImagePick
         present(alertController, animated: true, completion: nil)
     }
     
-    private func settingImagePicker(sourceType: UIImagePickerController.SourceType) {
-        
-        let pickerController = UIImagePickerController()
-        pickerController.delegate = self
-        pickerController.allowsEditing = true
-        
-        if UIImagePickerController.isSourceTypeAvailable(sourceType) {
-            pickerController.sourceType = sourceType
-            print("Source Type is Aviable.")
-        } else {
-            print("Sorry This Feature does not exist in this Device.")
-            self.dismiss(animated: true, completion: nil)
+    // Check for Autherizations to use Camera in this App.
+    private func checkAutherization() {
+
+        switch AVCaptureDevice.authorizationStatus(for: AVMediaType.video) {
+        case .authorized:
+            // Autherized Successfully.
+            settingImagePicker(sourceType: .camera)
+        case .denied:
+            // Denied. Show Error and also Directions to Autherize it in Settings with an Alert Message.
+            showErrorAlert(title: "Unable to access the Camera", message: "To enable access, go to Settings > Privacy > Camera and turn on Camera access for this app.", showSettings: true)
             
-            // if PhotoLibrary or Camera is not avaiable in the Device then Show Error.
-            showErrorAlert()
-        }
-        
-        DispatchQueue.main.async {
-            self.present(pickerController, animated: true, completion: nil)
+        case .notDetermined:
+            //User has not yet asked to give permissions to use Camera.
+            settingImagePicker(sourceType: .camera)
+            
+        case .restricted:
+            // User is restricted to access camera buy the Owner of the Device. Showing an Alert Message.
+            showErrorAlert(title: "Restricted", message: "Device owner must approve to use Camera on this Device.", showSettings: false)
+        default:
+            print("Default.")
         }
     }
     
-    //
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        if let image = info[.editedImage] as? UIImage { // If allows Editing is True
-            print("Edited Image is Selected.")
-            showImageView.image = image
-        } else if let image = info[.originalImage] as? UIImage { // If allows Editing is False
-            print("Original Image is Selected.")
-            showImageView.image = image
-        }
-        // Dismissing the ViewController when the image is selected.
-        dismiss(animated: true, completion: nil)
-    }
-    
-    // Show Error if Camera or Photolibrary is not avaiable in the device.
-    private func showErrorAlert() {
-        let alertController = UIAlertController(title: "Feature Not Found.", message: "Sorry, This feature is not available in this Device.", preferredStyle: .alert)
+    // Alert Controller to Show Error or Important Message on Screen.
+    private func showErrorAlert(title: String, message: String, showSettings: Bool) {
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         
+        // Okay Action to Cancel the AlertBox
         let okayAction = UIAlertAction(title: "Okay", style: .default) { (action) in
             self.dismiss(animated: true, completion: nil)
         }
         
+        // To open Settings if the User has denied the permissions.
+        let settingsAction = UIAlertAction(title: "Settings", style: .default) { (action) in
+            
+            guard let settingsURL = URL(string: UIApplication.openSettingsURLString) else {return}
+            
+            if UIApplication.shared.canOpenURL(settingsURL) {
+                UIApplication.shared.open(settingsURL, completionHandler: { (success) in
+                    print("Settings opened:", success)
+                })
+            }
+        }
+        
         alertController.addAction(okayAction)
+        
+        if showSettings { // Only when User Denied Permissions.
+            alertController.addAction(settingsAction)
+        }
         
         DispatchQueue.main.async {
             self.present(alertController, animated: true, completion: nil)
