@@ -10,6 +10,7 @@ import UIKit
 import Firebase
 import GoogleSignIn
 import AVFoundation
+import SVProgressHUD
 
 class UploadImageViewController: UIViewController {
     
@@ -111,7 +112,6 @@ extension UploadImageViewController: UINavigationControllerDelegate, UIImagePick
             
         } else {
             // If False.
-    
             self.dismiss(animated: true, completion: nil) // Dissmissing the Controller.
             
             // if PhotoLibrary or Camera is not avaiable in the Device then Show Error with an Alert Message.
@@ -275,8 +275,16 @@ extension UploadImageViewController {
     @objc func uploadBtnHandle() {
         if showImageView.image == UIImage(named: "placeholderImage.jpg") { // If user has NOT Selected any Image.
             print("Please Select Image to Upload.")
+            
         } else { // If user has Selected an Image.
-            print("Image is Uploading.")
+            // Uploading Image
+            SVProgressHUD.show(withStatus: "Uploading")
+            let networkManager = NetworkManager()
+            networkManager.uploadData(image: showImageView.image!) { (url) in
+                
+                // printing the URL in the Console.
+                print("Downloaded URL =", url)
+            }
         }
     }
     
